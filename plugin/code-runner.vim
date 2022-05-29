@@ -1,68 +1,47 @@
-" =================================
-" ========== Functions
-" =================================
+" ------------------------------------------------------------------------------
+" Exit when your app has already been loaded (or "compatible" mode set)
+if exists("g:loaded_code_runner") || &cp
+  finish
+endif
+let g:loaded_code_runner= 1 " your version number
+let s:keepcpo           = &cpo
+set cpo&vim
 
+" Public Interface:
+" AppFunction: is a function you expect your users to call
+" PickAMap: some sequence of characters that will run your AppFunction
+" Repeat these three lines as needed for multiple functions which will
+" be used to provide an interface for the user
+if !hasmapto('<Plug>AppFunction')
+  map <unique> <F11> <Plug>AppFunction
+endif
 
+" Global Maps:
+"
+noremap <silent> <unique> <script> <Plug>AppFunction
+ \ :set lz<CR>:call <SID>AppFunction()<CR>:set nolz<CR>
 
-function! s:compileAndRunPython()
-	if isdirectory('venv')
-		echom " using environment"
-		let l:source = 'source venv/bin/activate ;'
-		let l:deactivate = 'deactivate ; '
-		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
-		let l:StTerminalCLose = ' read -n1 "'
-		let l:filename = expand('%<')
-		if filereadable('.ReadInputsPython.zsh') && filereadable('.RunPython.zsh')
-			exe l:StTerminal . l:source . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . l:deactivate  . StTerminalCLose
-		else
-			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
-		endif
-	else
-		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
-		let l:StTerminalCLose = ' read -n1 "'
-		let l:filename = expand('%<')
-		if filereadable('.ReadInputsPython.zsh') && filereadable('.RunPython.zsh')
-			exe l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
-		else
-			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
-		endif
-	endif
+" ------------------------------------------------------------------------------
+" s:AppFunction: this function is available via the <Plug>/<script> interface above
+fun! s:AppFunction()
+  " your script function can set up maps to internal functions
+  " nnoremap <silent> <Left> :set lz<CR>:silent! call <SID>AppFunction2()<CR>
 
+  " your app can call functions in its own script and not worry about name
+  " clashes by preceding those function names with <SID>
+  call s:InternalAppFunction()
 
-endfunction
+  " or you could call it with
+  call s:InternalAppFunction()
+endfun
 
+" ------------------------------------------------------------------------------
+" s:InternalAppFunction: this function cannot be called from outside the
+" script, and its name won't clash with whatever else the user has loaded
+fun! s:InternalAppFunction()
+	echo "calling the internal app function"
+endfun
 
-
-function! s:CompileAndRunFile()
-	if (&ft=='py')
-		compileAndRunPython()
-	else
-		echo "Entered Compile And Run"
-	endif
-endfunction
-
-
-
-
-
-
-
-
-
-" =================================
-" ========== mappings 
-" =================================
-
-
-" for running the file either on the terminal
-" or through multiple test cases
-autocmd! BufEnter * nnoremap <F11> :call CompileAndRunFile()<cr>
-
-
-
-" for compiling and running a project
-" autocmd! BufEnter * nnoremap <F10> :call CompileAndRunProject()<CR>
-" " for running a file against multiple test cases
-" autocmd! BufEnter * nnoremap <F11><F11> :call InputAndRunFile()<CR>
-" " for forcing the run in just one file and normal input from the terminal
-" autocmd! BufEnter * nnoremap <F11><F11><F11> :call RunFileTerminalForce()<CR>
+" ------------------------------------------------------------------------------
+let &cpo= s:keepcpo
+unlet s:keepcpo
