@@ -485,8 +485,15 @@ endfun
 
 fun! s:CAR_Cs()
 	:w
-	autocmd BufEnter *.cs nnoremap <F11> :call CompileAndRunCsharp()<CR>
-	autocmd BufEnter *.cs nnoremap <F12> :call CompileAndRunCsharpAvalonia()<CR>
+	let l:ExecuteCommands = ':AsyncRun st -T "floating" -e sh -c '
+	if filereadable('run.sh')
+		exe ':AsyncRun st -T "floating" -e sh -c "sh run.sh ; read -n1" '
+	else
+		let l:filename = expand("%<")
+		let l:CompileCsharp = 'mcs ' . l:filename . '.cs ; '
+		let l:RunCSharp = 'mono ' . l:filename . '.exe ; '
+		exe l:ExecuteCommands . '"' . l:CompileCsharp . l:RunCSharp . ' read -n1 ; "'
+	endif
 endfun
 
 
