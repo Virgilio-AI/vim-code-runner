@@ -4,7 +4,6 @@
 " linkedin: https://www.linkedin.com/in/virgilio-murillo-ochoa-b29b59203
 " contact: virgiliomurilloochoa1@gmail.com
 " web: virgiliomurillo.com
-"
 
 
 " ------------------------------------------------------------------------------
@@ -236,7 +235,7 @@ endfun
 " =================================
 
 fun! s:CAR_Markdown()
-
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 
@@ -263,10 +262,12 @@ endfun
 
 
 function! s:Helper_CompileAndRunCppDefault(RunCommand)
+	:w
 	exe ':AsyncRun st -T "floating" -e sh -c "' . a:RunCommand . ' %:p -o %< && ./%< ; read -n1 "'
 endfunction
 
 function! s:Helper_CompileAndRunCppForCompetition(RunCommand)
+	:w
 	if filereadable("runcpp.sh")
 		exe ':AsyncRun sh runcpp.sh '
 	else
@@ -280,6 +281,7 @@ endfunction
 
 
 function! s:Helper_CompileAndRunCppForNcurses(RunCommand)
+	:w
 	exe ':AsyncRun st -T "floating" -e sh -c " ' . a:RunCommand . ' -lncurses %:p -o %<_nc && ./%<_nc ; read -n1"'
 endfunction
 
@@ -333,6 +335,7 @@ endfun
 
 
 function! s:Helper_CompileToJavaScript()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -e sh -c '
 	let l:CdRootDir = 'cd $(git rev-parse --show-toplevel) ; '
 	let l:CompileToJavascript = 'elm make src/Main.elm --output app.js ; '
@@ -345,6 +348,7 @@ function! s:Helper_CompileToJavaScript()
 endfunction
 
 function! s:Helper_CompileAndRunElm()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -e sh -c '
 	let l:CdRootDir = 'cd $(git rev-parse --show-toplevel) ; '
 	let l:CompileElm = 'elm make src/Main.elm ; '
@@ -363,6 +367,7 @@ endfunction
 
 
 fun! s:CAR_Elm()
+	:w
 	let ans = input("Compile to javascript?(Y,n)")
 	if ans == "" || ans == "y"
 		call s:Helper_CompileToJavaScript()
@@ -376,6 +381,7 @@ endfun
 
 
 fun! s:CAR_R()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 
@@ -386,6 +392,7 @@ fun! s:CAR_R()
 endfun
 
 fun! s:CAR_Zsh()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 
@@ -396,6 +403,7 @@ fun! s:CAR_Zsh()
 endfun
 
 fun! s:CAR_Python()
+	:w
 	if isdirectory('venv')
 		echom " using environment"
 		let l:source = 'source venv/bin/activate ;'
@@ -422,6 +430,7 @@ endfun
 
 
 function! s:Helper_RunMariaDb()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -g "170x30+0+0" -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 	let l:FileName_NoExtension = expand("%<")
@@ -437,6 +446,7 @@ function! s:Helper_RunMariaDb()
 endfunction
 
 function! s:Helper_RunMariaDbRoot()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -g "170x30+0+0" -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 	let l:FileName_NoExtension = expand("%<")
@@ -453,6 +463,7 @@ endfunction
 
 
 fun! s:CAR_Sql()
+	:w
 let ans = input("run as root?(y,N)")
 if ans == 'n' || ans == '' || ans == 'N'
 	call s:Helper_RunMariaDb()
@@ -465,6 +476,7 @@ endfun
 
 
 fun! s:CAR_Html()
+	:w
 	let l:ExecuteCommands = ':AsyncRun st -g "170x30+0+0" -T "floating" -e sh -c '
 	let l:runScript = 'brave ' . expand("%")
 
@@ -474,6 +486,7 @@ endfun
 
 
 fun! s:CAR_Cs()
+	:w
 	autocmd BufEnter *.cs nnoremap <F11> :call CompileAndRunCsharp()<CR>
 	autocmd BufEnter *.cs nnoremap <F12> :call CompileAndRunCsharpAvalonia()<CR>
 endfun
@@ -494,6 +507,7 @@ endfun
 
 
 fun! s:CARI_Python()
+	:w
 		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
 	let l:StTerminalCLose = ' read -n1 "'
 	let l:filename = expand('%<')
@@ -514,6 +528,7 @@ fun! s:CARI_Python()
 endfun
 
 fun! s:CARI_Cpp()
+	:w
 	let l:RunCommandInStTerminal='!AsyncRun st -T "floating" -e sh -c '
 	let l:openDoublequotes='"'
 	let l:closeDoublequotes='"'
@@ -533,6 +548,7 @@ endfun
 
 
 fun! s:CARFSI_Python()
+	:w
 	let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
 	let l:StTerminalCLose = ' read -n1 "'
 	let l:filename = expand('%<')
@@ -583,6 +599,7 @@ endfun
 " =================================
 
 fun! s:CE_Python()
+	:w
 	let l:StTerminal = ':AsyncRun st -T "floating" -g "200x50" -e sh -c "'
 	let l:StTerminalCLose = ' read -n1 "'
 	let l:pythonV = "python --version | grep -P \'\d\d+' -o > python_version.txt ;"
