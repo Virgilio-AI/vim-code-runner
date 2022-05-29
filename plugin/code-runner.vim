@@ -20,7 +20,7 @@ endfunction
 
 " for running the file either on the terminal
 " or through multiple test cases
-autocmd! BufEnter * nnoremap <F11> CompileAndRunFile()
+autocmd! BufEnter * nnoremap <F11> :call CompileAndRunFile()
 
 
 
