@@ -8,39 +8,76 @@ let s:keepcpo           = &cpo
 set cpo&vim
 
 " Public Interface:
-" AppFunction: is a function you expect your users to call
-" PickAMap: some sequence of characters that will run your AppFunction
-" Repeat these three lines as needed for multiple functions which will
-" be used to provide an interface for the user
-if !hasmapto('<Plug>AppFunction')
-  map <unique> <F11> <Plug>AppFunction
+" This are the default mappings
+" Example:
+" if !hasmapto('<Plug>AppFunction')
+"   map <unique> <F11> <Plug>AppFunction
+" endif
+
+" for compile and run file, std input or custom files
+if !hasmapto('<Plug>CompileAndRun')
+  map <unique> <F11> <Plug>CompileAndRun
 endif
+
+" for compile and run file, input from custom files
+if !hasmapto('<Plug>CompileAndRunInput')
+  map <unique> <F11> <Plug>CompileAndRunInput
+endif
+
 
 " Global Maps:
 "
-noremap <silent> <unique> <script> <Plug>AppFunction
- \ :set lz<CR>:call <SID>AppFunction()<CR>:set nolz<CR>
+" Example:
+"
+" noremap <silent> <unique> <script> <Plug>AppFunction
+"  \ :call <SID>AppFunction()<CR>
+
+
+noremap <silent> <unique> <script> <Plug>CompileAndRun
+ \ :call <SID>CompileAndRun()<CR>
+
+noremap <silent> <unique> <script> <Plug>CompileAndRunInput
+ \ :call <SID>CompileAndRunInput()<CR>
+
+
+
 
 " ------------------------------------------------------------------------------
-" s:AppFunction: this function is available via the <Plug>/<script> interface above
-fun! s:AppFunction()
-  " your script function can set up maps to internal functions
-  " nnoremap <silent> <Left> :set lz<CR>:silent! call <SID>AppFunction2()<CR>
+" Global Functions: here are the global functions that will call all the other
+" local functions
+" Example:
+" fun! s:AppFunction()
+"   call s:InternalAppFunction()
+"   call s:InternalAppFunction()
+" endfun
 
-  " your app can call functions in its own script and not worry about name
-  " clashes by preceding those function names with <SID>
-  call s:InternalAppFunction()
 
-  " or you could call it with
-  call s:InternalAppFunction()
+
+fun! s:CompileAndRun()
+	if (&ft == 'py')
+		echo "running on python file"
+	else
+		echo "running on generic file"
+	endif
+endfun
+
+
+
+fun! s:CompileAndRunInput()
+	if (&ft == 'py')
+		echo "running on python file"
+	else
+		echo "running on generic file"
+	endif
 endfun
 
 " ------------------------------------------------------------------------------
-" s:InternalAppFunction: this function cannot be called from outside the
-" script, and its name won't clash with whatever else the user has loaded
-fun! s:InternalAppFunction()
-	echo "calling the internal app function"
-endfun
+" Internal Functions: these are the internal functions that cannot be accesed
+" outside of the script
+" Example:
+# fun! s:InternalAppFunction()
+# 	echo "calling the internal app function"
+# endfun
 
 " ------------------------------------------------------------------------------
 let &cpo= s:keepcpo
