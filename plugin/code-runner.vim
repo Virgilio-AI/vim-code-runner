@@ -1,3 +1,12 @@
+" Date: 29/May/2022 - Sunday
+" Author: Virgilio Murillo Ochoa
+" personal github: Virgilio-AI
+" linkedin: https://www.linkedin.com/in/virgilio-murillo-ochoa-b29b59203
+" contact: virgiliomurilloochoa1@gmail.com
+" web: virgiliomurillo.com
+"
+
+
 " ------------------------------------------------------------------------------
 " Exit when your app has already been loaded (or "compatible" mode set)
 if exists("g:loaded_code_runner") || &cp
