@@ -24,6 +24,22 @@ if !hasmapto('<Plug>CompileAndRunInput')
   map <unique> <F11><F11> <Plug>CompileAndRunInput
 endif
 
+" for forcing std input on a code run
+if !hasmapto('<Plug>CompileAndRunForceStdInput')
+  map <unique> <F11><F11> <Plug>CompileAndRunForceStdInput
+endif
+
+" compile and run a whole project
+if !hasmapto('<Plug>CompileAndRunProject')
+  map <unique> <F10> <Plug>CompileAndRunProject
+endif
+
+
+" compile and run a whole project
+if !hasmapto('<Plug>CreateEnvironment')
+  map <unique> <F10> <Plug>CreateEnvironment
+endif
+
 
 " Global Maps:
 "
@@ -40,6 +56,20 @@ noremap <silent> <unique> <script> <Plug>CompileAndRunInput
  \ :call <SID>CompileAndRunInput()<CR>
 
 
+noremap <silent> <unique> <script> <Plug>CompileAndRunForceStdInput
+ \ :call <SID>CompileAndRunForceStdInput()<CR>
+
+
+noremap <silent> <unique> <script> <Plug>CompileAndRunProject
+ \ :call <SID>CompileAndRunProject()<CR>
+
+
+noremap <silent> <unique> <script> <Plug>CreateEnvironment
+ \ :call <SID>CreateEnvironment()<CR>
+
+
+
+
 
 
 " ------------------------------------------------------------------------------
@@ -54,25 +84,86 @@ noremap <silent> <unique> <script> <Plug>CompileAndRunInput
 
 
 fun! s:CompileAndRun()
-	echo &ft
-	if &filetype ==# 'python'
-		echo "correct"
-	endif
 
 	if (&ft == 'python')
-		echo "running on python file"
-	else
-		echo "running on generic file"
+	elseif (&ft == 'markdown')
+	elseif (&ft == 'cpp')
+	elseif (&ft == 'c')
+	elseif (&ft == 'tex' || &ft == 'plaintex')
+	elseif (&ft == 'sh')
+	elseif (&ft == 'elm')
+	elseif (&ft == 'r')
+	elseif (&ft == 'zsh')
+	elseif (&ft == 'cs')
+	elseif (&ft == 'sql')
+	elseif (&ft == 'html')
 	endif
 endfun
 
 
 
 fun! s:CompileAndRunInput()
-	if (&ft == 'py')
-		echo "running on python file"
-	else
-		echo "running on generic file"
+	if (&ft == 'python')
+		call s:test()
+	elseif (&ft == 'markdown')
+	elseif (&ft == 'cpp')
+	elseif (&ft == 'c')
+	elseif (&ft == 'tex' || &ft == 'plaintex')
+	elseif (&ft == 'sh')
+	elseif (&ft == 'elm')
+	elseif (&ft == 'r')
+	elseif (&ft == 'zsh')
+	elseif (&ft == 'cs')
+	elseif (&ft == 'sql')
+	elseif (&ft == 'html')
+	endif
+endfun
+
+fun! s:CompileAndRunForceStdInput()
+	if (&ft == 'python')
+	elseif (&ft == 'markdown')
+	elseif (&ft == 'cpp')
+	elseif (&ft == 'c')
+	elseif (&ft == 'tex' || &ft == 'plaintex')
+	elseif (&ft == 'sh')
+	elseif (&ft == 'elm')
+	elseif (&ft == 'r')
+	elseif (&ft == 'zsh')
+	elseif (&ft == 'cs')
+	elseif (&ft == 'sql')
+	elseif (&ft == 'html')
+	endif
+endfun
+
+fun! s:CompileAndRunProject()
+	if (&ft == 'python')
+	elseif (&ft == 'markdown')
+	elseif (&ft == 'cpp')
+	elseif (&ft == 'c')
+	elseif (&ft == 'tex' || &ft == 'plaintex')
+	elseif (&ft == 'sh')
+	elseif (&ft == 'elm')
+	elseif (&ft == 'r')
+	elseif (&ft == 'zsh')
+	elseif (&ft == 'cs')
+	elseif (&ft == 'sql')
+	elseif (&ft == 'html')
+	endif
+endfun
+
+fun! s:CreateEnvironment()
+	if (&ft == 'python')
+	elseif (&ft == 'markdown')
+	elseif (&ft == 'cpp')
+	elseif (&ft == 'c')
+	elseif (&ft == 'tex' || &ft == 'plaintex')
+	elseif (&ft == 'sh')
+	elseif (&ft == 'elm')
+	elseif (&ft == 'r')
+	elseif (&ft == 'zsh')
+	elseif (&ft == 'cs')
+	elseif (&ft == 'sql')
+	elseif (&ft == 'html')
 	endif
 endfun
 
@@ -83,6 +174,10 @@ endfun
 " fun! s:InternalAppFunction()
 " 	echo "calling the internal app function"
 " endfun
+fun! s:test()
+	echo "calling the internal app function"
+	echo 'source ' . expand('%:p:h') . '/CompileAndRunFunctions.vim'
+endfun
 
 " ------------------------------------------------------------------------------
 let &cpo= s:keepcpo
