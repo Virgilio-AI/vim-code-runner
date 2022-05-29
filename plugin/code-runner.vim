@@ -176,7 +176,7 @@ endfun
 " endfun
 fun! s:test()
 	echo "calling the internal app function"
-	echo 'source ' . expand('code-runner.vim:p:h') . '/CompileAndRunFunctions.vim'
+	echo 'source ' . expand('<sfile>:p:h') . '/CompileAndRunFunctions.vim'
 endfun
 
 " ------------------------------------------------------------------------------
