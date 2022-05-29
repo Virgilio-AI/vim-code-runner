@@ -21,7 +21,7 @@ endif
 
 " for compile and run file, input from custom files
 if !hasmapto('<Plug>CompileAndRunInput')
-  map <unique> <F11> <Plug>CompileAndRunInput
+  map <unique> <F11><F11> <Plug>CompileAndRunInput
 endif
 
 
@@ -75,9 +75,9 @@ endfun
 " Internal Functions: these are the internal functions that cannot be accesed
 " outside of the script
 " Example:
-# fun! s:InternalAppFunction()
-# 	echo "calling the internal app function"
-# endfun
+" fun! s:InternalAppFunction()
+" 	echo "calling the internal app function"
+" endfun
 
 " ------------------------------------------------------------------------------
 let &cpo= s:keepcpo
