@@ -395,10 +395,8 @@ fun! s:CAR_Zsh()
 	:w
 	let l:ExecuteCommands = ':AsyncRun st -T "floating" -e sh -c '
 	let l:FileName = expand("%")
-
 	let l:FileName_NoExtension = expand("%<")
-	let l:runScript = 'Rscript ' . l:FileName . ' '
-
+	let l:runScript = 'zsh ' . l:FileName . ' '
 	exe l:ExecuteCommands . '"' . l:runScript . ' ; read -n1 ' . '"'
 endfun
 
