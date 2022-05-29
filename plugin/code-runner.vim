@@ -26,7 +26,7 @@ endif
 
 " for forcing std input on a code run
 if !hasmapto('<Plug>CompileAndRunForceStdInput')
-  map <unique> <F11><F11> <Plug>CompileAndRunForceStdInput
+  map <unique> <F11><F11><F11> <Plug>CompileAndRunForceStdInput
 endif
 
 " compile and run a whole project
@@ -37,7 +37,7 @@ endif
 
 " compile and run a whole project
 if !hasmapto('<Plug>CreateEnvironment')
-  map <unique> <F10> <Plug>CreateEnvironment
+  map <unique> <F5> <Plug>CreateEnvironment
 endif
 
 
