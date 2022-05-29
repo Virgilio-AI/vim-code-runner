@@ -279,19 +279,19 @@ endfunction
 fun! s:CAR_C_CPP(RunCommand)
 	:w!
 	if filereadable("In.txt") || filereadable("runcpp.sh")
-		:call Helper_CompileAndRunCppForCompetition(a:RunCommand)
+		:call s:Helper_CompileAndRunCppForCompetition(a:RunCommand)
 	else
 		if filereadable("%<_nc")
-			:call Helper_CompileAndRunCppForNcurses(a:RunCommand)
+			:call s:Helper_CompileAndRunCppForNcurses(a:RunCommand)
 			return
 		endif
 		let tempChar = input("(c)ompetition-(n)curses-(d)efault: ")
 		if tempChar == "c"
-			:call Helper_CompileAndRunCppForCompetition(a:RunCommand)
+			:call s:Helper_CompileAndRunCppForCompetition(a:RunCommand)
 		elseif tempChar == "d"
-			:call Helper_CompileAndRunCppDefault(a:RunCommand)
+			:call s:Helper_CompileAndRunCppDefault(a:RunCommand)
 		else
-			:call Helper_CompileAndRunCppForNcurses(a:RunCommand)
+			:call s:Helper_CompileAndRunCppForNcurses(a:RunCommand)
 		endif
 	endif
 endfun
