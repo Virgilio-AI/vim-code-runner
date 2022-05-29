@@ -55,11 +55,11 @@ noremap <silent> <unique> <script> <Plug>CompileAndRunInput
 
 fun! s:CompileAndRun()
 	echo &ft
-	if &filetype ==# 'py'
+	if &filetype ==# 'python'
 		echo "correct"
 	endif
 
-	if (&ft == 'py')
+	if (&ft == 'python')
 		echo "running on python file"
 	else
 		echo "running on generic file"
