@@ -253,11 +253,11 @@ endfun
 
 
 
-function! Helper_CompileAndRunCppDefault(RunCommand)
+function! s:Helper_CompileAndRunCppDefault(RunCommand)
 	exe ':AsyncRun st -T "floating" -e sh -c "' . a:RunCommand . ' %:p -o %< && ./%< ; read -n1 "'
 endfunction
 
-function! Helper_CompileAndRunCppForCompetition(RunCommand)
+function! s:Helper_CompileAndRunCppForCompetition(RunCommand)
 	if filereadable("runcpp.sh")
 		exe ':AsyncRun sh runcpp.sh '
 	else
@@ -270,7 +270,7 @@ function! Helper_CompileAndRunCppForCompetition(RunCommand)
 endfunction
 
 
-function! Helper_CompileAndRunCppForNcurses(RunCommand)
+function! s:Helper_CompileAndRunCppForNcurses(RunCommand)
 	exe ':AsyncRun st -T "floating" -e sh -c " ' . a:RunCommand . ' -lncurses %:p -o %<_nc && ./%<_nc ; read -n1"'
 endfunction
 
@@ -386,7 +386,7 @@ fun! s:CAR_Zsh()
 	exe l:ExecuteCommands . '"' . l:runScript . ' ; read -n1 ' . '"'
 endfun
 
-fun! CAR_Python()
+fun! s:CAR_Python()
 	if isdirectory('venv')
 		echom " using environment"
 		let l:source = 'source venv/bin/activate ;'
@@ -504,7 +504,7 @@ fun! s:CARI_Python()
 	endif
 endfun
 
-fun! CARI_Cpp()
+fun! s:CARI_Cpp()
 	let l:RunCommandInStTerminal='!AsyncRun st -T "floating" -e sh -c '
 	let l:openDoublequotes='"'
 	let l:closeDoublequotes='"'
