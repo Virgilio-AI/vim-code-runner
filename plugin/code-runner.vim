@@ -448,7 +448,7 @@ function! s:Helper_RunMariaDbRoot()
 	let l:ExecuteCommands = ':AsyncRun st -g "170x30+0+0" -T "floating" -e sh -c '
 	let l:FileName = expand("%")
 	let l:FileName_NoExtension = expand("%<")
-	let l:runScript = 'sudo mariadb --execute=\"source ' . l:FileName . ' ;\" '
+	let l:runScript = 'mariadb -u root -p --execute=\"source ' . l:FileName . ' ;\" '
 	let l:final  = l:ExecuteCommands . '"' . l:runScript . ' ; read -n1 '. '"'
 	echom l:final
 	let outFile = input("write output to termnal?(y/n): ")
