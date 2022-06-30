@@ -523,12 +523,28 @@ fun! s:CARI_Python()
 		exe l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
 	else
 		let l:InputFiles = input("enter the number of input files: ")
-		let l:enableDiff = input("enable diff with a correct out sample? (y/n): ")
+
+		" enable diff default yes
+		let l:enableDiff = input("enable diff with a correct out sample? (Y/n): ")
+		if l:enableDiff == ""
+			l:enableDiff = "y"
+		endif
+
+		" enable input file default yes
+		let l:enableInput = input("enable input files? (Y/n)")
+		if l:enableInput == ""
+			l:enableInput = "y"
+		endif
+
 		let l:readI = ' zsh .ReadInputsPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.' ; '
-		let l:RunP = ' zsh .RunPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.'; '
+		let l:RunP = ' zsh .RunPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.' ' . l:InputFiles .' ; '
 		:echom l:RunP
 		:echom l:readI
-		exe l:StTerminal . l:copyFilesToHome . l:readI . l:RunP . l:StTerminalCLose
+		if l:enableInput == "y"
+			exe l:StTerminal . l:copyFilesToHome . l:readI . l:RunP . l:StTerminalCLose
+		else
+			exe l:StTerminal . l:copyFilesToHome . l:RunP . l:StTerminalCLose
+		endif
 	endif
 endfun
 
