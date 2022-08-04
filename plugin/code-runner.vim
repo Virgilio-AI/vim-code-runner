@@ -404,6 +404,7 @@ fun! s:CAR_Python()
 	:w
 	if isdirectory('venv')
 		echom " using environment"
+
 		let l:source = 'source venv/bin/activate ;'
 		let l:deactivate = 'deactivate ; '
 		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
@@ -415,10 +416,13 @@ fun! s:CAR_Python()
 			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
 		endif
 	else
+
+		let l:folderLocation =  '.code-runner/' . l:name
 		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
 		let l:StTerminalCLose = ' read -n1 "'
 		let l:filename = expand('%<')
-		if filereadable('.ReadInputsPython.zsh') && filereadable('.RunPython.zsh')
+		if filereadable(l:folderLocation . '.ReadInputsPython.zsh') && filereadable( l:folderLocation . '.RunPython.zsh')
+			:echom l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
 			exe l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
 		else
 			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
@@ -510,41 +514,66 @@ endfun
 
 
 
-
+"
 fun! s:CARI_Python()
+	let l:monitorXPos=system("xwininfo -id $(xdotool getactivewindow) | grep 'Absolute upper-left X: ' | awk '{print $4}'")[:-2]
+	let l:monitorYPos=system("xwininfo -id $(xdotool getactivewindow) | grep 'Absolute upper-left Y: ' | awk '{print $4}'")[:-2]
 	:w
-		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
+	let l:StTerminal = ':AsyncRun st -T "floating" -g "80x30+' . l:monitorXPos . '+' . l:monitorYPos . '" -e sh -c "'
+	echo "st terminal:"
+	echo l:StTerminal
+	echo "=="
+
+
+	" % - relative path
+	" %:p - absolute path
+	" %< - for filename without extension
+	" use expand('')
+	"
+
 	let l:StTerminalCLose = ' read -n1 "'
 	let l:filename = expand('%<')
 	let l:RunFileFolder = ' ~/.config/nvim/runFileConfigurations'
-	let l:copyFilesToHome =' cp '. l:RunFileFolder.'/.RunPython.zsh . ; cp '.l:RunFileFolder.'/.ReadInputsPython.zsh . ; '
+
+
+
 	let l:filenameNoEx = expand('%:p<')
-	if filereadable('.ReadInputsPython.zsh') && filereadable('.RunPython.zsh')
-		exe l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
+	let l:name = expand('%<')
+	let l:folderLocation =  '.code-runner/' . l:name
+
+	let l:CreateFolder = 'mkdir -p ' .l:folderLocation
+
+
+	let l:copyFilesToHome =''.l:CreateFolder.' ;  cp -r'. l:RunFileFolder.'/.RunPython.zsh '.l:folderLocation.'/ ; cp '.l:RunFileFolder.'/.ReadInputsPython.zsh '.l:folderLocation.'/ ; '
+
+
+
+
+	if filereadable( l:folderLocation . '/.ReadInputsPython.zsh') && filereadable(l:folderLocation . '.RunPython.zsh')
+		echom l:StTerminal . ' zsh '.l:folderLocation.'/.RunPython.zsh -1 ' . l:filename. ' ; ' . l:StTerminalCLose
+		exe l:StTerminal . ' zsh '.l:folderLocation.'/.RunPython.zsh -1 ' . l:filename. ' ; ' . l:StTerminalCLose
 	else
 		let l:InputFiles = input("enter the number of input files: ")
 
 		" enable diff default yes
 		let l:enableDiff = input("enable diff with a correct out sample? (Y/n): ")
 		if l:enableDiff == ""
-			l:enableDiff = "y"
+			let l:enableDiff = "y"
 		endif
 
 		" enable input file default yes
 		let l:enableInput = input("enable input files? (Y/n)")
 		if l:enableInput == ""
-			l:enableInput = "y"
+			let l:enableInput = "y"
 		endif
 
-		let l:readI = ' zsh .ReadInputsPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.' ; '
-		let l:RunP = ' zsh .RunPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.' ' . l:InputFiles .' ; '
+		let l:readI = ' zsh '.l:folderLocation.'/.ReadInputsPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff. ' ' . l:enableInput . ' ; '
+		let l:RunP = ' zsh '.l:folderLocation.'/.RunPython.zsh '.l:InputFiles.' "' . l:filename . '" '.l:enableDiff.' ' . l:enableInput .' ; '
+
 		:echom l:RunP
 		:echom l:readI
-		if l:enableInput == "y"
-			exe l:StTerminal . l:copyFilesToHome . l:readI . l:RunP . l:StTerminalCLose
-		else
-			exe l:StTerminal . l:copyFilesToHome . l:RunP . l:StTerminalCLose
-		endif
+
+		exe l:StTerminal . l:copyFilesToHome . l:readI . l:RunP . l:StTerminalCLose
 	endif
 endfun
 
