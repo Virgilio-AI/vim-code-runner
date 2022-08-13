@@ -402,9 +402,12 @@ endfun
 
 fun! s:CAR_Python()
 	:w
+
+	let l:name = expand('%<')
+	let l:folderLocation =  '.code-runner/' . l:name
+
 	if isdirectory('venv')
 		echom " using environment"
-
 		let l:source = 'source venv/bin/activate ;'
 		let l:deactivate = 'deactivate ; '
 		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
@@ -417,13 +420,12 @@ fun! s:CAR_Python()
 		endif
 	else
 
-		let l:folderLocation =  '.code-runner/' . l:name
 		let l:StTerminal = ':AsyncRun st -T "floating" -g "100x50" -e sh -c "'
 		let l:StTerminalCLose = ' read -n1 "'
 		let l:filename = expand('%<')
-		if filereadable(l:folderLocation . '.ReadInputsPython.zsh') && filereadable( l:folderLocation . '.RunPython.zsh')
-			:echom l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
-			exe l:StTerminal . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . StTerminalCLose
+		if filereadable(l:folderLocation . '/.ReadInputsPython.zsh') && filereadable( l:folderLocation . '/.RunPython.zsh')
+			:echom l:StTerminal . ' zsh '.l:folderLocation.'/.RunPython.zsh -1 ' . l:filename. ' ; ' . l:StTerminalCLose
+			exe l:StTerminal . ' zsh '.l:folderLocation.'/.RunPython.zsh -1 ' . l:filename. ' ; ' . l:StTerminalCLose
 		else
 			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
 		endif
