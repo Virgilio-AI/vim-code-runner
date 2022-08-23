@@ -30,6 +30,11 @@ Force run in terminal
 ```
 When you first compare test cases now every time you run <F11> the default behabiour will be that of the comparison o ftest cases
 
+you also will need to have cpdiff file in your environment variables
+and you will have to paste .ReadInputsPython.zsh and .RunPython.zsh into ~/.config/nvim/runFileConfigurations/
+
+
+# supported languages
 | language |      compile and run      |  compile and run input | (force std input) |
 |----------|:-------------------------:| ----------------------:|------------------:|
 |   python |yes                        | yes                    | yes               |
@@ -42,8 +47,5 @@ When you first compare test cases now every time you run <F11> the default behab
 | zsh | yes | No | No |
 | cs | yes | No | No |
 | html | yes | No | No |
-
-you also will need to have cpdiff file in your environment variables
-and you will have to paste .ReadInputsPython.zsh and .RunPython.zsh into ~/.config/nvim/runFileConfigurations/
 
 
