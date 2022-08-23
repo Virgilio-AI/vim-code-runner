@@ -49,3 +49,7 @@ and you will have to paste .ReadInputsPython.zsh and .RunPython.zsh into ~/.conf
 | html | yes | No | No |
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
