@@ -310,18 +310,25 @@ endfun
 
 fun! s:CAR_Latex()
 	:w!
-	if filereadable('tempFileForConfig.tex')
-		echo "there is a tempFileForConfig.tex in the folder, the binding wont work until you delete it"
-		return
-	endif
+
 	let l:OpenTerminal = 'AsyncRun st -T "floating" -e sh -c '
-	let l:CopyConfigFileToCurrentPath = ' cp ~/.config/nvim/runFileConfigurations/configuration.tex . ; '
-	let l:CopyFileToMainTex = 'cp ' . b:FileNameNoExtension . '.tex tempFileForConfig.tex ; '
-	let l:RunPdfLatex = ' pdflatex --shell-escape configuration.tex ; '
-	let l:ChangeNamePdf = ' mv configuration.pdf ' . b:FileNameNoExtension . '.pdf ; '
-	let l:removeJunkFiles = ' rm -rfd tempFileForConfig.tex configuration.* _minted-configuration ; '
-	let l:OpenPdf = ' zathura ' . b:FileNameNoExtension . '.pdf'
-	exe l:OpenTerminal . '"' . l:CopyConfigFileToCurrentPath . l:CopyFileToMainTex . l:RunPdfLatex . l:RunPdfLatex .  l:ChangeNamePdf . l:removeJunkFiles . l:OpenPdf  . '"'
+	" ask a question to the user and read the answer
+	let l:tempChar = input("Do you want to use an external configuration? (Y/n): ")
+	if l:tempChar == "y" || l:tempChar == "Y"
+		" store the file name in a variable
+		let l:FileName = expand("%")
+		exe ':AsyncRun st -T "floating" -e sh -c "pdflatex ' . l:FileName . ' ; zathura ' . l:FileName . '.pdf ; read -n1 "'
+	else
+		let l:CopyConfigFileToCurrentPath = ' cp ~/.config/nvim/runFileConfigurations/configuration.tex . ; '
+		let l:CopyFileToMainTex = 'cp ' . b:FileNameNoExtension . '.tex tempFileForConfig.tex ; '
+		let l:RunPdfLatex = ' pdflatex --shell-escape configuration.tex ; '
+		let l:ChangeNamePdf = ' mv configuration.pdf ' . b:FileNameNoExtension . '.pdf ; '
+		let l:removeJunkFiles = ' rm -rfd tempFileForConfig.tex configuration.* _minted-configuration ; '
+		let l:OpenPdf = ' zathura ' . b:FileNameNoExtension . '.pdf'
+		exe l:OpenTerminal . '"' . l:CopyConfigFileToCurrentPath . l:CopyFileToMainTex . l:RunPdfLatex . l:RunPdfLatex .  l:ChangeNamePdf . l:removeJunkFiles . l:OpenPdf  . '"'
+	endif
+	return
+
 endfun
 
 
@@ -430,6 +437,7 @@ fun! s:CAR_Python()
 			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
 		endif
 	endif
+
 endfun
 
 
