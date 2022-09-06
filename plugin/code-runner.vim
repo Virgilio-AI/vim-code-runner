@@ -311,13 +311,21 @@ endfun
 fun! s:CAR_Latex()
 	:w!
 
-	let l:OpenTerminal = 'AsyncRun st -T "floating" -e sh -c '
+	let l:OpenTerminal = 'AsyncRun st -g "70x60+100+100" -T "floating" -e sh -c '
+
 	" ask a question to the user and read the answer
 	let l:tempChar = input("Do you want to use an external configuration? (Y/n): ")
-	if l:tempChar == "y" || l:tempChar == "Y"
+
+	if l:tempChar == "y" || l:tempChar == "Y" || l:tempChar == ""
 		" store the file name in a variable
 		let l:FileName = expand("%")
-		exe ':AsyncRun st -T "floating" -e sh -c "pdflatex ' . l:FileName . ' ; zathura ' . l:FileName . '.pdf ; read -n1 "'
+		let l:Name = expand("%<")
+		let l:Command = l:OpenTerminal . '" pdflatex --shell-scape ' . l:FileName . ' ; zathura ' . l:Name . '.pdf ; read -n1 "'
+
+		echo l:Command
+
+		exe l:Command
+
 	else
 		let l:CopyConfigFileToCurrentPath = ' cp ~/.config/nvim/runFileConfigurations/configuration.tex . ; '
 		let l:CopyFileToMainTex = 'cp ' . b:FileNameNoExtension . '.tex tempFileForConfig.tex ; '
