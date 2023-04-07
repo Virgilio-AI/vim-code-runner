@@ -431,7 +431,7 @@ fun! s:CAR_Python()
 		if filereadable('.ReadInputsPython.zsh') && filereadable('.RunPython.zsh')
 			exe l:StTerminal . l:source . ' zsh .RunPython.zsh -1 ' . l:filename. ' ; ' . l:deactivate  . StTerminalCLose
 		else
-			exe l:StTerminal . ' python ' . l:filename . '.py ; ' . l:StTerminalCLose
+			exe l:StTerminal . l:source .  ' python ' . l:filename . '.py ; ' . l:deactivate . l:StTerminalCLose
 		endif
 	else
 
